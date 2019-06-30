@@ -1,4 +1,4 @@
-# Dump and S3 bucket to local drive fast and relibaly
+# Dump an S3 bucket to local drive fast and reliably
 
 This code builds on top of the others' work that I found via random Google searches.
 
