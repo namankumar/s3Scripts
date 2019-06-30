@@ -1,11 +1,13 @@
+# Dump and S3 bucket to local drive fast and relibaly
+
 This code builds on top of the others' work that I found via random Google searches.
 
-Motivation
+## Motivation
 * wanted to parallelize downloading files. Currently availale utility, like s3cmd, download one file at a time
 * wanted a super simple interface to download an entire bucket
 * finer grain control over what / how the code actually does
 
-How to use this
+## How to use this
 * download.py downloads an entire s3 bucket to local drive
 * inputs: bucket name, local path, number of threads
 * the more the number of threads, the more simultanuous files you can download. Three is a good number of threads but you may want to experiment for your internet connection
