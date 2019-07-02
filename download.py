@@ -33,9 +33,12 @@ class Downloader(object):
             try:
                 p_name =  multiprocessing.current_process().name
                 key_name = input.get(True, 1)
-                dir = key_name.split('/')[0]
+                dir = key_name[:key_name.rfind('/')]
                 dir = os.path.join(self.download_path, dir)
                 path = os.path.join(self.download_path, key_name)
+                #print(key_name + '  --  ' + dir + '  --  ' + path)
+                #continue
+
                 self.count += 1
 
                 if os.path.exists(path):
@@ -50,17 +53,10 @@ class Downloader(object):
 
             try:
                 if not os.path.exists(dir):
-                    os.mkdir(dir)
+                    os.makedirs(dir)
                     
                 def f(x, y):
                     if x < y:
-                        #this logic is iffy. The right way to do this is to have sepeate output streams for each thread. Right now, the carriage
-                        #return for the most recent thread will overwrite the update from the previous thread. But no biggie, this is just the status 
-                        #of what's currently going on
-                        
-                        #similarly, self.count, is a shared variable across all threads but each thread makes a copy of it only updates it's own copy
-                        #so what appears on the screen is actually wrong. But doesn't matter right now since we are downloading a sorted list and 
-                        #the progress is obvious by looking at how far down the list we got. The fix is n_tasks - queLength but this doesn't work on macs
                         print('%s  %d of %d KB  -- %d done of %d - %s' % (p_name, x/1000, y/1000, self.count, self.n_tasks, key_name), end='\r')
                     else:
                         print('%s  %d of %d KB  -- %d done of %d - %s' % (p_name, x/1000, y/1000, self.count, self.n_tasks, key_name))
@@ -83,5 +79,5 @@ class Downloader(object):
         self.end_time = datetime.datetime.now()
         print('total time = ', (self.end_time - self.start_time))
 
-dload = Downloader('download_path', 's3_bucket', number_of_threads, )
+dload = Downloader('destination_dir', 's3_bucket', 3)
 dload.main()
